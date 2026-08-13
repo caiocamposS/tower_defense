@@ -1,4 +1,11 @@
-class Tower:
+import pygame
+
+class Tower(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+
+        
+
     def attack():
         pass
 

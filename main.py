@@ -15,13 +15,14 @@ enemy.image = pygame.transform.scale(enemy.image,
                                      (enemy.image.get_width() / 12,
                                       enemy.image.get_height() / 12))
 
+map_image = pygame.image.load("assets/images/map.png").convert_alpha()
+map_image = pygame.transform.scale(map_image,
+                                   (screen.get_width(),
+                                    screen.get_height()))
+
 running = True
 
-# waypoints
-PATH = [[-enemy.image.get_width(), 150],[1000, 150],[1000, 550],[280, 550],[280, -enemy.image.get_height()]]
-
-enemy_pos = list(PATH[0])
-target_idx = 1
+enemy_passed = False
 
 while running:
     # poll for events
@@ -31,32 +32,20 @@ while running:
             running = False
 
     # fill the screen with a color to wipe away anything from last frame
-    screen.fill("white")
+    screen.blit(map_image, (0, 0))
 
     # RENDER YOUR GAME HERE
 
-    if target_idx < len(PATH):
-        target_pos = PATH[target_idx]
+    # movimento do inimigo e se passar perde vida
+    if enemy.movement():
+        screen.blit(enemy.image, (enemy.position))
+        hitbox = pygame.Rect(enemy.position[0], enemy.position[1], enemy.image.get_width(), enemy.image.get_height())
 
-        if enemy_pos[0] < target_pos[0]:
-            enemy_pos[0] += enemy.speed
-        elif enemy_pos[0] > target_pos[0]:
-            enemy_pos[0] -= enemy.speed
+    elif enemy_passed == False:
+        print("Perdeu uma vida.")
+        enemy_passed = True
 
-        if enemy_pos[1] < target_pos[1]:
-            enemy_pos[1] += enemy.speed
-        elif enemy_pos[1] > target_pos[1]:
-            enemy_pos[1] -= enemy.speed
-
-        if enemy_pos == target_pos:
-            target_idx += 1
-
-    else:
-        print("Perdeu uma vida")
-
-
-    screen.blit(enemy.image, (enemy_pos))
-    hitbox = pygame.Rect(enemy_pos[0], enemy_pos[1], enemy.image.get_width(), enemy.image.get_height())
+    
 
     # flip() the display to put your work on screen
     pygame.display.flip()
