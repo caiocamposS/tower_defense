@@ -1,4 +1,5 @@
 import pygame
+
 from game.path import PATH
 
 image_path = "/home/caio-breno/projects/tower_defense/assets/images/enemy.png"
@@ -10,7 +11,7 @@ class Enemy(pygame.sprite.Sprite):
         self.life = life
         self.speed = speed
         self.path = path
-        self.position = position
+        self.position = position.copy()
         self.target_idx = target_pos_idx
         
         self.image = pygame.image.load(image_path).convert_alpha()
